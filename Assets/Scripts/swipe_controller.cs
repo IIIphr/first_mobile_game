@@ -82,25 +82,15 @@ public class swipe_controller : MonoBehaviour
                     {
                         if (Mathf.Abs(touch_start.x - touch_end.x) > Mathf.Abs(touch_start.y - touch_end.y))
                         {
-                            if (touch_start.x > touch_end.x)
+                            if (touch_start.x < touch_end.x)
                             {
-                                print("left!");
-                            }
-                            else
-                            {
-                                print("right!");
                                 transform.parent.GetComponent<card_container_script>().discarded(gameObject);
                             }
                         }
                         else
                         {
-                            if (touch_start.y > touch_end.y)
+                            if (touch_start.y < touch_end.y)
                             {
-                                print("down!");
-                            }
-                            else
-                            {
-                                print("up!");
                                 transform.parent.GetComponent<card_container_script>().used(gameObject);
                             }
                         }
