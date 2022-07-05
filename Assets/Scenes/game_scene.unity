@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b25a8609a87ddb4da7ae2ca38a96156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card_template: {fileID: 1972262867}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e40e2b9f8bab7544b37147c23f0d0a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cards_container: {fileID: 245304555}
 --- !u!1 &1972262867
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1972262868
 Transform:
   m_ObjectHideFlags: 0
@@ -488,3 +490,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card_rest_position: {x: 0, y: -1, z: 0}
+  can_spawn: 1

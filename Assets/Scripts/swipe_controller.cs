@@ -5,19 +5,27 @@ using UnityEngine;
 public class swipe_controller : MonoBehaviour
 {
     [SerializeField] Vector3 card_rest_position = Vector3.zero;
+    [SerializeField] public bool can_spawn = true;
+    [SerializeField] public bool can_move = true;
     Vector3 touch_start, touch_end;
     double min_drag_length;
-    [SerializeField] public bool can_spawn = true;
 
     // Start is called before the first frame update
     void Start()
     {
         min_drag_length = Screen.height * 10.0 / 100.0;
+        transform.position = card_rest_position;
     }
 
     public void set_rest_pos(Vector3 pos)
     {
         card_rest_position = pos;
+        transform.position = pos;
+    }
+
+    public Vector3 get_rest_pos()
+    {
+        return card_rest_position;
     }
 
     public void set_can_spawn(bool can)
@@ -40,67 +48,76 @@ public class swipe_controller : MonoBehaviour
         {
             transform.parent
                 .GetComponent<card_container_script>()
-                .spawn_card_at_pos(card_rest_position + pos);
+                .spawn_card_at_pos(card_rest_position + pos, true);
         }
+    }
+
+    public void set_can_move(bool can)
+    {
+        can_move = can;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.touchCount == 1)
+        if (can_move)
         {
-            Touch touch = Input.GetTouch(0);
-            if(touch.phase == TouchPhase.Began)
+            if (Input.touchCount == 1)
             {
-                touch_start = touch.position;
-                touch_end = touch.position;
-            }
-            else if(touch.phase == TouchPhase.Moved)
-            {
-                touch_end = touch.position;
-            }
-            else if(touch.phase == TouchPhase.Ended)
-            {
-                touch_end = touch.position;
-                if(Mathf.Abs(touch_start.x - touch_end.x) >= min_drag_length ||
-                    Mathf.Abs(touch_start.y - touch_end.y) >= min_drag_length)
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    if(Mathf.Abs(touch_start.x - touch_end.x) > Mathf.Abs(touch_start.y - touch_end.y))
+                    touch_start = touch.position;
+                    touch_end = touch.position;
+                }
+                else if (touch.phase == TouchPhase.Moved)
+                {
+                    touch_end = touch.position;
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    touch_end = touch.position;
+                    if (Mathf.Abs(touch_start.x - touch_end.x) >= min_drag_length ||
+                        Mathf.Abs(touch_start.y - touch_end.y) >= min_drag_length)
                     {
-                        if(touch_start.x > touch_end.x)
+                        if (Mathf.Abs(touch_start.x - touch_end.x) > Mathf.Abs(touch_start.y - touch_end.y))
                         {
-                            print("left!");
-                            spanw_to(new Vector3(-1, 0, 0));
+                            if (touch_start.x > touch_end.x)
+                            {
+                                print("left!");
+                            }
+                            else
+                            {
+                                print("right!");
+                                transform.parent.GetComponent<card_container_script>().discarded(gameObject);
+                            }
                         }
                         else
                         {
-                            print("right!");
-                            spanw_to(new Vector3(1, 0, 0));
+                            if (touch_start.y > touch_end.y)
+                            {
+                                print("down!");
+                            }
+                            else
+                            {
+                                print("up!");
+                                transform.parent.GetComponent<card_container_script>().used(gameObject);
+                            }
                         }
                     }
                     else
                     {
-                        if (touch_start.y > touch_end.y)
-                        {
-                            print("down!");
-                        }
-                        else
-                        {
-                            print("up!");
-                            spanw_to(new Vector3(0, 1, 0));
-                        }
+                        print("it was small!");
                     }
+                    touch_start = card_rest_position;
+                    touch_end = card_rest_position;
                 }
-                else
-                {
-                    print("it was small!");
-                }
+                transform.localPosition = card_rest_position + card_transform_calc(touch_start, touch_end);
             }
-            transform.localPosition = card_rest_position + card_transform_calc(touch_start, touch_end);
-        }
-        else
-        {
-            transform.localPosition = card_rest_position;
+            else
+            {
+                transform.localPosition = card_rest_position;
+            }
         }
     }
 }
