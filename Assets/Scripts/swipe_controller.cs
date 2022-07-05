@@ -7,11 +7,22 @@ public class swipe_controller : MonoBehaviour
     [SerializeField] Vector3 card_rest_position = Vector3.zero;
     Vector3 touch_start, touch_end;
     double min_drag_length;
+    [SerializeField] public bool can_spawn = true;
 
     // Start is called before the first frame update
     void Start()
     {
         min_drag_length = Screen.height * 10.0 / 100.0;
+    }
+
+    public void set_rest_pos(Vector3 pos)
+    {
+        card_rest_position = pos;
+    }
+
+    public void set_can_spawn(bool can)
+    {
+        can_spawn = can;
     }
 
     Vector3 card_transform_calc(Vector3 starting_touch_pos, Vector3 current_touch_pos)
@@ -21,6 +32,16 @@ public class swipe_controller : MonoBehaviour
             ) - Camera.main.ScreenToWorldPoint(
             new Vector3(starting_touch_pos.x, starting_touch_pos.y, Camera.main.transform.position.z * -1)
             );
+    }
+
+    void spanw_to(Vector3 pos)
+    {
+        if (can_spawn)
+        {
+            transform.parent
+                .GetComponent<card_container_script>()
+                .spawn_card_at_pos(card_rest_position + pos);
+        }
     }
 
     // Update is called once per frame
@@ -49,10 +70,12 @@ public class swipe_controller : MonoBehaviour
                         if(touch_start.x > touch_end.x)
                         {
                             print("left!");
+                            spanw_to(new Vector3(-1, 0, 0));
                         }
                         else
                         {
                             print("right!");
+                            spanw_to(new Vector3(1, 0, 0));
                         }
                     }
                     else
@@ -64,6 +87,7 @@ public class swipe_controller : MonoBehaviour
                         else
                         {
                             print("up!");
+                            spanw_to(new Vector3(0, 1, 0));
                         }
                     }
                 }
