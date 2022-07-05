@@ -6,6 +6,7 @@ public class card_container_script : MonoBehaviour
 {
     [SerializeField] GameObject card_template;
     [SerializeField] Vector3 deck_rest_pos = Vector3.zero;
+    [SerializeField] Sprite[] card_textures;
     ArrayList hand_cards = new ArrayList();
     ArrayList discard_pile = new ArrayList();
 
@@ -42,6 +43,7 @@ public class card_container_script : MonoBehaviour
         temp.GetComponent<swipe_controller>().set_can_spawn(false);
         temp.GetComponent<swipe_controller>().set_can_move(can_move);
         temp.GetComponent<SpriteRenderer>().sortingOrder = order;
+        temp.GetComponent<SpriteRenderer>().sprite = card_textures[Random.Range(0, card_textures.Length-1)];
         temp.SetActive(active);
         hand_cards.Add(temp);
     }
