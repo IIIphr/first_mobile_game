@@ -43,7 +43,7 @@ public class card_container_script : MonoBehaviour
         temp.GetComponent<swipe_controller>().set_can_spawn(false);
         temp.GetComponent<swipe_controller>().set_can_move(can_move);
         temp.GetComponent<SpriteRenderer>().sortingOrder = order;
-        temp.GetComponent<SpriteRenderer>().sprite = card_textures[Random.Range(0, card_textures.Length-1)];
+        temp.GetComponent<SpriteRenderer>().sprite = card_textures[Random.Range(0, card_textures.Length)];
         temp.SetActive(active);
         hand_cards.Add(temp);
     }
