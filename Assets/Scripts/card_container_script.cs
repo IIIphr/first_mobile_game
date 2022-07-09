@@ -25,7 +25,7 @@ public class card_container_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        button.SetActive(false);
     }
 
     public void use_spell()
@@ -109,18 +109,18 @@ public class card_container_script : MonoBehaviour
         Vector3 dest = new_ing_place(card);
         if(dest == Vector3.zero)
         {
-            print("full!");
+            //print("full!");
             return;
         }
         hand_cards.Remove(card);
         //discard_pile.Add(card);
-        StartCoroutine(move_over_time(card, dest, 0.1f, false));
+        StartCoroutine(move_over_time(card, dest, 0.05f, false));
         card.GetComponent<SpriteRenderer>().sortingOrder = 0;
         card.GetComponent<swipe_controller>().can_be_disabled = true;
         card.GetComponent<swipe_controller>().set_can_move(false);
         if (hand_cards.Count > 0)
         {
-            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
+            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.05f));
         }
         else
         {
@@ -136,8 +136,8 @@ public class card_container_script : MonoBehaviour
         card.GetComponent<swipe_controller>().set_can_move(false);
         if (hand_cards.Count > 0)
         {
-            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.1f, true));
-            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
+            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.05f, true));
+            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.05f));
         }
         else
         {
