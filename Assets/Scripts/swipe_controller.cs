@@ -9,6 +9,7 @@ public class swipe_controller : MonoBehaviour
     [SerializeField] public bool can_move = true;
     Vector3 touch_start, touch_end;
     double min_drag_length;
+    public bool can_be_disabled = true;
 
     // Start is called before the first frame update
     void Start()
