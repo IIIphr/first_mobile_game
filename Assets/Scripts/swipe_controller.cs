@@ -96,10 +96,10 @@ public class swipe_controller : MonoBehaviour
                             }
                         }
                     }
-                    else
-                    {
-                        print("it was small!");
-                    }
+                    //else
+                    //{
+                    //    print("it was small!");
+                    //}
                     touch_start = card_rest_position;
                     touch_end = card_rest_position;
                 }

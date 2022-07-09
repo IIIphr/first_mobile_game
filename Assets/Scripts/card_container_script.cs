@@ -12,6 +12,10 @@ public class card_container_script : MonoBehaviour
     [SerializeField] GameObject first_spell_ing;
     [SerializeField] GameObject second_spell_ing;
     [SerializeField] GameObject third_spell_ing;
+    [SerializeField] GameObject button;
+    GameObject card_at_first_ing = null;
+    GameObject card_at_second_ing = null;
+    GameObject card_at_third_ing = null;
     bool is_first_full = false;
     bool is_second_full = false;
     bool is_third_full = false;
@@ -24,7 +28,27 @@ public class card_container_script : MonoBehaviour
 
     }
 
-    public Vector3 new_ing_place()
+    public void use_spell()
+    {
+        discard_pile.Add(card_at_first_ing);
+        discard_pile.Add(card_at_second_ing);
+        discard_pile.Add(card_at_third_ing);
+        card_at_first_ing.SetActive(false);
+        card_at_second_ing.SetActive(false);
+        card_at_third_ing.SetActive(false);
+        card_at_first_ing.transform.position = discard_deck.transform.position;
+        card_at_second_ing.transform.position = discard_deck.transform.position;
+        card_at_third_ing.transform.position = discard_deck.transform.position;
+        card_at_first_ing = null;
+        card_at_second_ing = null;
+        card_at_third_ing = null;
+        is_first_full = false;
+        is_second_full = false;
+        is_third_full = false;
+        button.SetActive(false);
+    }
+
+    public Vector3 new_ing_place(GameObject card)
     {
         if (is_first_full)
         {
@@ -35,12 +59,16 @@ public class card_container_script : MonoBehaviour
                     return Vector3.zero;
                 }
                 is_third_full = true;
+                card_at_third_ing = card;
+                button.SetActive(true);
                 return third_spell_ing.transform.position;
             }
             is_second_full = true;
+            card_at_second_ing = card;
             return second_spell_ing.transform.position;
         }
         is_first_full = true;
+        card_at_first_ing = card;
         return first_spell_ing.transform.position;
     }
 
@@ -78,7 +106,7 @@ public class card_container_script : MonoBehaviour
 
     public void used(GameObject card)
     {
-        Vector3 dest = new_ing_place();
+        Vector3 dest = new_ing_place(card);
         if(dest == Vector3.zero)
         {
             print("full!");
@@ -94,10 +122,10 @@ public class card_container_script : MonoBehaviour
         {
             StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
         }
-        //else
-        //{
-        //    shuffle_back();
-        //}
+        else
+        {
+            shuffle_back();
+        }
     }
 
     public void discarded(GameObject card)
