@@ -9,6 +9,12 @@ public class card_container_script : MonoBehaviour
     [SerializeField] Sprite[] card_textures;
     [SerializeField] GameObject draw_deck;
     [SerializeField] GameObject discard_deck;
+    [SerializeField] GameObject first_spell_ing;
+    [SerializeField] GameObject second_spell_ing;
+    [SerializeField] GameObject third_spell_ing;
+    bool is_first_full = false;
+    bool is_second_full = false;
+    bool is_third_full = false;
     ArrayList hand_cards = new ArrayList();
     ArrayList discard_pile = new ArrayList();
 
@@ -18,10 +24,30 @@ public class card_container_script : MonoBehaviour
 
     }
 
+    public Vector3 new_ing_place()
+    {
+        if (is_first_full)
+        {
+            if (is_second_full)
+            {
+                if (is_third_full)
+                {
+                    return Vector3.zero;
+                }
+                is_third_full = true;
+                return third_spell_ing.transform.position;
+            }
+            is_second_full = true;
+            return second_spell_ing.transform.position;
+        }
+        is_first_full = true;
+        return first_spell_ing.transform.position;
+    }
+
     public void fill_deck(int number_of_cards)
     {
         Vector3 position = deck_rest_pos;
-        int order = number_of_cards - 1;
+        int order = number_of_cards;
         for(int i=0; i<number_of_cards; i++)
         {
             if (i == 0)
@@ -52,28 +78,25 @@ public class card_container_script : MonoBehaviour
 
     public void used(GameObject card)
     {
+        Vector3 dest = new_ing_place();
+        if(dest == Vector3.zero)
+        {
+            print("full!");
+            return;
+        }
         hand_cards.Remove(card);
-        discard_pile.Add(card);
+        //discard_pile.Add(card);
+        StartCoroutine(move_over_time(card, dest, 0.1f, false));
+        card.GetComponent<SpriteRenderer>().sortingOrder = 0;
         card.GetComponent<swipe_controller>().can_be_disabled = true;
-        //card.SetActive(false);
         card.GetComponent<swipe_controller>().set_can_move(false);
         if (hand_cards.Count > 0)
         {
-            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.1f, true));
             StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
-            //StartCoroutine(can_move_after_delay(0.001f));
         }
-        else
-        {
-            shuffle_back();
-        }
-        //for (int i = 0; i < hand_cards.Count; i++)
+        //else
         //{
-        //    ((GameObject)hand_cards[i]).GetComponent<swipe_controller>()
-        //        .set_rest_pos(
-        //            ((GameObject)hand_cards[i]).GetComponent<swipe_controller>()
-        //                .get_rest_pos() + new Vector3(0.1f, 0, 0)
-        //        );
+        //    shuffle_back();
         //}
     }
 
@@ -81,20 +104,12 @@ public class card_container_script : MonoBehaviour
     {
         hand_cards.Remove(card);
         discard_pile.Add(card);
-        //card.SetActive(false);
+        card.GetComponent<swipe_controller>().can_be_disabled = true;
         card.GetComponent<swipe_controller>().set_can_move(false);
-        StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.5f, true));
-        for (int i = 0; i < hand_cards.Count; i++)
-        {
-            ((GameObject)hand_cards[i]).GetComponent<swipe_controller>()
-                .set_rest_pos(
-                    ((GameObject)hand_cards[i]).GetComponent<swipe_controller>()
-                        .get_rest_pos() + new Vector3(0.1f, 0, 0)
-                );
-        }
         if (hand_cards.Count > 0)
         {
-            StartCoroutine(can_move_after_delay(0.001f));
+            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.1f, true));
+            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
         }
         else
         {
