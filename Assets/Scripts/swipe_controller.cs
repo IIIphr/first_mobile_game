@@ -5,8 +5,8 @@ using UnityEngine;
 public class swipe_controller : MonoBehaviour
 {
     [SerializeField] Vector3 card_rest_position = Vector3.zero;
-    [SerializeField] public bool can_spawn = true;
-    [SerializeField] public bool can_move = true;
+    public bool can_spawn = true;
+    public bool can_move = true;
     Vector3 touch_start, touch_end;
     double min_drag_length;
     public bool can_be_disabled = true;

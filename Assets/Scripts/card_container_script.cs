@@ -59,9 +59,9 @@ public class card_container_script : MonoBehaviour
         card.GetComponent<swipe_controller>().set_can_move(false);
         if (hand_cards.Count > 0)
         {
-            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.5f, true));
-            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.5f));
-            StartCoroutine(can_move_after_delay(0.001f));
+            StartCoroutine(move_over_time(card, discard_deck.transform.position, 0.1f, true));
+            StartCoroutine(move_cards_to_front(hand_cards, deck_rest_pos, 0.1f));
+            //StartCoroutine(can_move_after_delay(0.001f));
         }
         else
         {
@@ -183,13 +183,14 @@ public class card_container_script : MonoBehaviour
             starting_positions.Add(((GameObject)cards[i]).transform.position);
             ((GameObject)cards[i]).GetComponent<swipe_controller>().set_can_move(false);
         }
-        var t = 0f;
+        float t = 0f;
         while (t < 1)
         {
             t += Time.deltaTime / duration;
             for (int i = 0; i < cards.Count; i++)
             {
-                ((GameObject)cards[i]).transform.position += displacement_per_frame;
+                ((GameObject)cards[i]).GetComponent<swipe_controller>()
+                    .set_rest_pos(((GameObject)cards[i]).transform.position + displacement_per_frame);
             }
             yield return null;
         }
