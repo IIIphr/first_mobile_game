@@ -25,7 +25,7 @@ public class enemy_script : MonoBehaviour
     public void damaged(float damage)
     {
         hp -= damage;
-        if(hp < 0)
+        if(hp <= 0)
         {
             die();
         }
