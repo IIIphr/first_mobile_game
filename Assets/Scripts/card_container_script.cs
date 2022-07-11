@@ -26,11 +26,64 @@ public class card_container_script : MonoBehaviour
     ArrayList hand_cards = new ArrayList();
     ArrayList discard_pile = new ArrayList();
     float multiplier = 1;
+    int deck_size = 5;
 
     // Start is called before the first frame update
     void Start()
     {
         button.SetActive(false);
+    }
+
+    void clear_cards_everywhere()
+    {
+        for (int i = 0; i < hand_cards.Count; i++)
+        {
+            Destroy((GameObject)hand_cards[i]);
+        }
+        hand_cards.Clear();
+        for (int i = 0; i < discard_pile.Count; i++)
+        {
+            Destroy((GameObject)discard_pile[i]);
+        }
+        discard_pile.Clear();
+        if (is_first_full)
+        {
+            is_first_full = false;
+            Destroy(card_at_first_ing);
+            card_at_first_ing = null;
+        }
+        if (is_second_full)
+        {
+            is_second_full = false;
+            Destroy(card_at_second_ing);
+            card_at_second_ing = null;
+        }
+        if (is_third_full)
+        {
+            is_third_full = false;
+            Destroy(card_at_third_ing);
+            card_at_third_ing = null;
+        }
+    }
+
+    public void reshuffle()
+    {
+        Vector3 position = deck_rest_pos;
+        int order = deck_size;
+        clear_cards_everywhere();
+        for (int i = 0; i < deck_size; i++)
+        {
+            if (i == 0)
+            {
+                spawn_card_at_pos(position, true, order, true);
+            }
+            else
+            {
+                spawn_card_at_pos(position, true, order, false);
+            }
+            position += new Vector3(-0.1f, 0, 0);
+            order--;
+        }
     }
 
     Vector3 get_color_vector(GameObject card)
@@ -124,6 +177,7 @@ public class card_container_script : MonoBehaviour
 
     public void fill_deck(int number_of_cards)
     {
+        deck_size = number_of_cards;
         Vector3 position = deck_rest_pos;
         int order = number_of_cards;
         for(int i=0; i<number_of_cards; i++)

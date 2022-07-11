@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class enemy_script : MonoBehaviour
 {
+    [SerializeField] Image health_bar;
+    [SerializeField] float max_hp = 10;
     float hp = 10;
 
     // Start is called before the first frame update
@@ -26,6 +29,7 @@ public class enemy_script : MonoBehaviour
         {
             die();
         }
+        health_bar.fillAmount = hp / max_hp;
     }
 
     // Update is called once per frame
