@@ -5,8 +5,12 @@ using UnityEngine;
 public class card_container_script : MonoBehaviour
 {
     [SerializeField] GameObject card_template;
+    [SerializeField] GameObject enemies_container;
     [SerializeField] Vector3 deck_rest_pos = Vector3.zero;
     [SerializeField] Sprite[] card_textures;
+    [SerializeField] Sprite red_card;
+    [SerializeField] Sprite blue_card;
+    [SerializeField] Sprite green_card;
     [SerializeField] GameObject draw_deck;
     [SerializeField] GameObject discard_deck;
     [SerializeField] GameObject first_spell_ing;
@@ -21,6 +25,7 @@ public class card_container_script : MonoBehaviour
     bool is_third_full = false;
     ArrayList hand_cards = new ArrayList();
     ArrayList discard_pile = new ArrayList();
+    float multiplier = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +33,53 @@ public class card_container_script : MonoBehaviour
         button.SetActive(false);
     }
 
+    Vector3 get_color_vector(GameObject card)
+    {
+        if(card.GetComponent<SpriteRenderer>().sprite == red_card)
+        {
+            return new Vector3(1, 0, 0);
+        }
+        if (card.GetComponent<SpriteRenderer>().sprite == green_card)
+        {
+            return new Vector3(0, 1, 0);
+        }
+        if (card.GetComponent<SpriteRenderer>().sprite == blue_card)
+        {
+            return new Vector3(0, 0, 1);
+        }
+        return Vector3.zero;
+    }
+
+    void spell_action(Vector3 spell)
+    {
+        if(spell == new Vector3(3, 0, 0))
+        {
+            enemies_container.GetComponent<enemy_cont_script>()
+                .deal_damage(3 * multiplier);
+            multiplier = 1;
+        }
+        else if (spell == new Vector3(0, 3, 0))
+        {
+            print("healed");
+            multiplier = 1;
+        }
+        else if (spell == new Vector3(0, 0, 3))
+        {
+            multiplier = 2;
+        }
+        else
+        {
+            print("nothing for now...");
+        }
+    }
+
     public void use_spell()
     {
+        Vector3 spell =
+            get_color_vector(card_at_first_ing) +
+            get_color_vector(card_at_second_ing) +
+            get_color_vector(card_at_third_ing);
+        spell_action(spell);
         discard_pile.Add(card_at_first_ing);
         discard_pile.Add(card_at_second_ing);
         discard_pile.Add(card_at_third_ing);
