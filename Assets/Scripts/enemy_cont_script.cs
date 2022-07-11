@@ -6,6 +6,7 @@ public class enemy_cont_script : MonoBehaviour
 {
     [SerializeField] GameObject enemy_template;
     [SerializeField] GameObject card_container;
+    [SerializeField] GameObject spawn_button;
     ArrayList current_enemies = new ArrayList();
 
     // Start is called before the first frame update
@@ -20,11 +21,16 @@ public class enemy_cont_script : MonoBehaviour
         temp.transform.SetParent(this.gameObject.transform);
         temp.SetActive(true);
         current_enemies.Add(temp);
+        spawn_button.SetActive(false);
     }
 
     public void died(GameObject enemy)
     {
         current_enemies.Remove(enemy);
+        if(current_enemies.Count == 0)
+        {
+            spawn_button.SetActive(true);
+        }
     }
 
     public void deal_damage(float damage)

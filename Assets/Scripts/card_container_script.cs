@@ -34,7 +34,7 @@ public class card_container_script : MonoBehaviour
         button.SetActive(false);
     }
 
-    void clear_cards_everywhere()
+    int clear_cards_everywhere()
     {
         for (int i = 0; i < hand_cards.Count; i++)
         {
@@ -46,32 +46,18 @@ public class card_container_script : MonoBehaviour
             Destroy((GameObject)discard_pile[i]);
         }
         discard_pile.Clear();
-        if (is_first_full)
-        {
-            is_first_full = false;
-            Destroy(card_at_first_ing);
-            card_at_first_ing = null;
-        }
-        if (is_second_full)
-        {
-            is_second_full = false;
-            Destroy(card_at_second_ing);
-            card_at_second_ing = null;
-        }
-        if (is_third_full)
-        {
-            is_third_full = false;
-            Destroy(card_at_third_ing);
-            card_at_third_ing = null;
-        }
+        return 
+            (is_first_full ? 1 : 0) + 
+            (is_second_full ? 1 : 0) +
+            (is_third_full ? 1 : 0);
     }
 
     public void reshuffle()
     {
         Vector3 position = deck_rest_pos;
         int order = deck_size;
-        clear_cards_everywhere();
-        for (int i = 0; i < deck_size; i++)
+        int spell_ing_count = clear_cards_everywhere();
+        for (int i = 0; i < deck_size - spell_ing_count; i++)
         {
             if (i == 0)
             {
@@ -111,6 +97,18 @@ public class card_container_script : MonoBehaviour
                 .deal_damage(3 * multiplier);
             multiplier = 1;
         }
+        else if (spell == new Vector3(2, 0, 1))
+        {
+            enemies_container.GetComponent<enemy_cont_script>()
+                .deal_damage(2 * multiplier);
+            multiplier = 1;
+        }
+        else if (spell == new Vector3(1, 0, 2))
+        {
+            enemies_container.GetComponent<enemy_cont_script>()
+                .deal_damage(1 * multiplier);
+            multiplier = 1;
+        }
         else if (spell == new Vector3(0, 3, 0))
         {
             print("healed");
@@ -118,7 +116,7 @@ public class card_container_script : MonoBehaviour
         }
         else if (spell == new Vector3(0, 0, 3))
         {
-            multiplier = 2;
+            multiplier *= 2;
         }
         else
         {
