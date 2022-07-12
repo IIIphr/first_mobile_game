@@ -39,7 +39,7 @@ public class game_handler_script : MonoBehaviour
         player_hp -= damage;
         if(player_hp <= 0)
         {
-            SceneManager.LoadScene("main_menu");
+            SceneManager.LoadScene("game_over");
         }
     }
 
