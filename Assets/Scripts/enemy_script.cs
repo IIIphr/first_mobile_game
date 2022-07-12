@@ -9,6 +9,7 @@ public class enemy_script : MonoBehaviour
     [SerializeField] Image health_bar;
     [SerializeField] TextMeshProUGUI health_number;
     [SerializeField] float max_hp = 10;
+    [SerializeField] float damage = 2;
     float hp = 10;
 
     // Start is called before the first frame update
@@ -20,6 +21,13 @@ public class enemy_script : MonoBehaviour
     public void set_health_text()
     {
         health_number.text = hp + "/" + max_hp;
+    }
+
+    public void do_turn()
+    {
+        // deal damage
+        this.transform.parent.GetComponent<enemy_cont_script>()
+            .damage_to_player(damage);
     }
 
     public void set_max_hp(float number)

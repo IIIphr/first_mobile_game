@@ -783,6 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card_template: {fileID: 1972262867}
   enemies_container: {fileID: 1355849247}
+  game_handler: {fileID: 1210177580}
   deck_rest_pos: {x: 0, y: -2, z: 0}
   card_textures:
   - {fileID: 21300000, guid: 27c94b7d477f2964fa5f8115c0dfce12, type: 3}
@@ -797,6 +798,7 @@ MonoBehaviour:
   second_spell_ing: {fileID: 1417424735}
   third_spell_ing: {fileID: 88064624}
   button: {fileID: 117750821}
+  action_per_turn: 3
 --- !u!1 &366297921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,7 +1389,7 @@ MonoBehaviour:
   m_text: spawn orc
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 302b210bf5761e44a8b71475cd2a351e, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 302b210bf5761e44a8b71475cd2a351e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1450,7 +1452,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &858653795
@@ -1689,6 +1691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cards_container: {fileID: 245304555}
   enemies_container: {fileID: 1355849247}
+  player_max_hp: 10
 --- !u!1 &1235160778
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,6 +1860,7 @@ MonoBehaviour:
   health_bar: {fileID: 127652692}
   health_number: {fileID: 1368867489}
   max_hp: 10
+  damage: 2
 --- !u!4 &1305969049
 Transform:
   m_ObjectHideFlags: 0
@@ -1957,6 +1961,7 @@ MonoBehaviour:
   enemy_template: {fileID: 1305969045}
   card_container: {fileID: 245304555}
   spawn_button: {fileID: 1966284126}
+  game_handler: {fileID: 1210177580}
 --- !u!4 &1355849249
 Transform:
   m_ObjectHideFlags: 0

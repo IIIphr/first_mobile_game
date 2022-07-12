@@ -7,6 +7,7 @@ public class enemy_cont_script : MonoBehaviour
     [SerializeField] GameObject enemy_template;
     [SerializeField] GameObject card_container;
     [SerializeField] GameObject spawn_button;
+    [SerializeField] GameObject game_handler;
     int difficulty = 1;
     ArrayList current_enemies = new ArrayList();
     float reg_hp = 10;
@@ -15,6 +16,26 @@ public class enemy_cont_script : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void damage_to_player(float damage)
+    {
+        game_handler.GetComponent<game_handler_script>()
+            .damage_to_player(damage);
+    }
+
+    public void pass_turn()
+    {
+        if (current_enemies.Count > 0)
+        {
+            ((GameObject)current_enemies[0])
+                .GetComponent<enemy_script>()
+                .do_turn();
+        }
+        else
+        {
+            print("no enemy");
+        }
     }
 
     public void set_diffculty(int diff)

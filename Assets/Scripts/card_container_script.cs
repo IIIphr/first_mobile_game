@@ -6,6 +6,7 @@ public class card_container_script : MonoBehaviour
 {
     [SerializeField] GameObject card_template;
     [SerializeField] GameObject enemies_container;
+    [SerializeField] GameObject game_handler;
     [SerializeField] Vector3 deck_rest_pos = Vector3.zero;
     [SerializeField] Sprite[] card_textures;
     [SerializeField] Sprite red_card;
@@ -17,6 +18,8 @@ public class card_container_script : MonoBehaviour
     [SerializeField] GameObject second_spell_ing;
     [SerializeField] GameObject third_spell_ing;
     [SerializeField] GameObject button;
+    [SerializeField] int action_per_turn = 3;
+    int current_actions = 0;
     GameObject card_at_first_ing = null;
     GameObject card_at_second_ing = null;
     GameObject card_at_third_ing = null;
@@ -52,6 +55,17 @@ public class card_container_script : MonoBehaviour
             (is_third_full ? 1 : 0);
     }
 
+    void did_action()
+    {
+        current_actions++;
+        if(current_actions >= action_per_turn)
+        {
+            current_actions = 0;
+            game_handler.GetComponent<game_handler_script>()
+                .pass_turn();
+        }
+    }
+
     public void reshuffle()
     {
         Vector3 position = deck_rest_pos;
@@ -70,6 +84,7 @@ public class card_container_script : MonoBehaviour
             position += new Vector3(-0.1f, 0, 0);
             order--;
         }
+        did_action();
     }
 
     Vector3 get_color_vector(GameObject card)
@@ -147,6 +162,9 @@ public class card_container_script : MonoBehaviour
         is_second_full = false;
         is_third_full = false;
         button.SetActive(false);
+        current_actions = 0;
+        game_handler.GetComponent<game_handler_script>()
+            .pass_turn();
     }
 
     public Vector3 new_ing_place(GameObject card)
