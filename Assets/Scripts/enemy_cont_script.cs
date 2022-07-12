@@ -7,7 +7,9 @@ public class enemy_cont_script : MonoBehaviour
     [SerializeField] GameObject enemy_template;
     [SerializeField] GameObject card_container;
     [SerializeField] GameObject spawn_button;
+    int difficulty = 1;
     ArrayList current_enemies = new ArrayList();
+    float reg_hp = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -15,10 +17,22 @@ public class enemy_cont_script : MonoBehaviour
         
     }
 
+    public void set_diffculty(int diff)
+    {
+        difficulty = diff;
+        reg_hp = difficulty == 0 ? 5 : (difficulty == 1 ? 10 : 20);
+    }
+
+    public void start_spawning()
+    {
+        add_enemy();
+    }
+
     public void add_enemy()
     {
         GameObject temp = Instantiate(enemy_template);
         temp.transform.SetParent(this.gameObject.transform);
+        temp.GetComponent<enemy_script>().set_max_hp(reg_hp);
         temp.SetActive(true);
         current_enemies.Add(temp);
         spawn_button.SetActive(false);

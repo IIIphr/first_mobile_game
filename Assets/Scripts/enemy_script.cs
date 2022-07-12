@@ -14,7 +14,18 @@ public class enemy_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        set_health_text();
+    }
+
+    public void set_health_text()
+    {
         health_number.text = hp + "/" + max_hp;
+    }
+
+    public void set_max_hp(float number)
+    {
+        hp = number;
+        max_hp = number;
     }
 
     public void die()
@@ -32,7 +43,7 @@ public class enemy_script : MonoBehaviour
             die();
         }
         health_bar.fillAmount = hp / max_hp;
-        health_number.text = hp + "/" + max_hp;
+        set_health_text();
     }
 
     // Update is called once per frame
