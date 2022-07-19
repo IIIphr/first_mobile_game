@@ -10,6 +10,7 @@ public class swipe_controller : MonoBehaviour
     Vector3 touch_start, touch_end;
     double min_drag_length;
     public bool can_be_disabled = true;
+    bool valid_swipe = false;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +69,13 @@ public class swipe_controller : MonoBehaviour
                 Touch touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Began)
                 {
+                    Vector3 temp = Camera.main.ScreenToWorldPoint(
+                        new Vector3(touch.position.x, touch.position.y, Camera.main.transform.position.z * -1)
+                        );
+                    if (temp.y <= -1)
+                    {
+                        valid_swipe = true;
+                    }
                     touch_start = touch.position;
                     touch_end = touch.position;
                 }
@@ -77,33 +85,40 @@ public class swipe_controller : MonoBehaviour
                 }
                 else if (touch.phase == TouchPhase.Ended)
                 {
-                    touch_end = touch.position;
-                    if (Mathf.Abs(touch_start.x - touch_end.x) >= min_drag_length ||
-                        Mathf.Abs(touch_start.y - touch_end.y) >= min_drag_length)
+                    if (valid_swipe)
                     {
-                        if (Mathf.Abs(touch_start.x - touch_end.x) > Mathf.Abs(touch_start.y - touch_end.y))
+                        touch_end = touch.position;
+                        if (Mathf.Abs(touch_start.x - touch_end.x) >= min_drag_length ||
+                            Mathf.Abs(touch_start.y - touch_end.y) >= min_drag_length)
                         {
-                            if (touch_start.x < touch_end.x)
+                            if (Mathf.Abs(touch_start.x - touch_end.x) > Mathf.Abs(touch_start.y - touch_end.y))
                             {
-                                transform.parent.GetComponent<card_container_script>().discarded(gameObject);
+                                if (touch_start.x < touch_end.x)
+                                {
+                                    transform.parent.GetComponent<card_container_script>().discarded(gameObject);
+                                }
+                            }
+                            else
+                            {
+                                if (touch_start.y < touch_end.y)
+                                {
+                                    transform.parent.GetComponent<card_container_script>().used(gameObject);
+                                }
                             }
                         }
-                        else
-                        {
-                            if (touch_start.y < touch_end.y)
-                            {
-                                transform.parent.GetComponent<card_container_script>().used(gameObject);
-                            }
-                        }
+                        //else
+                        //{
+                        //    print("it was small!");
+                        //}
                     }
-                    //else
-                    //{
-                    //    print("it was small!");
-                    //}
+                    valid_swipe = false;
                     touch_start = card_rest_position;
                     touch_end = card_rest_position;
                 }
-                transform.localPosition = card_rest_position + card_transform_calc(touch_start, touch_end);
+                if (valid_swipe)
+                {
+                    transform.localPosition = card_rest_position + card_transform_calc(touch_start, touch_end);
+                }
             }
             else
             {
