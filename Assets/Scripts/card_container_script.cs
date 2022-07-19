@@ -37,7 +37,7 @@ public class card_container_script : MonoBehaviour
         button.SetActive(false);
     }
 
-    int clear_cards_everywhere()
+    int clear_cards_except_spell()
     {
         for (int i = 0; i < hand_cards.Count; i++)
         {
@@ -70,7 +70,7 @@ public class card_container_script : MonoBehaviour
     {
         Vector3 position = deck_rest_pos;
         int order = deck_size;
-        int spell_ing_count = clear_cards_everywhere();
+        int spell_ing_count = clear_cards_except_spell();
         for (int i = 0; i < deck_size - spell_ing_count; i++)
         {
             if (i == 0)
@@ -87,64 +87,62 @@ public class card_container_script : MonoBehaviour
         did_action();
     }
 
-    Vector3 get_color_vector(GameObject card)
+    int get_color(GameObject card)
     {
         if(card.GetComponent<SpriteRenderer>().sprite == red_card)
         {
-            return new Vector3(1, 0, 0);
+            return 1;
         }
         if (card.GetComponent<SpriteRenderer>().sprite == green_card)
         {
-            return new Vector3(0, 1, 0);
+            return 2;
         }
         if (card.GetComponent<SpriteRenderer>().sprite == blue_card)
         {
-            return new Vector3(0, 0, 1);
+            return 3;
         }
-        return Vector3.zero;
+        return 0;
     }
 
     void spell_action(Vector3 spell)
     {
-        if(spell == new Vector3(3, 0, 0))
+        if(spell == new Vector3(1, 1, 1))
         {
             enemies_container.GetComponent<enemy_cont_script>()
                 .deal_damage(3 * multiplier);
             multiplier = 1;
         }
-        else if (spell == new Vector3(2, 0, 1))
+        else if (spell == new Vector3(1, 1, 3) || spell == new Vector3(1, 3, 1) || spell == new Vector3(3, 1, 1))
         {
             enemies_container.GetComponent<enemy_cont_script>()
                 .deal_damage(2 * multiplier);
             multiplier = 1;
         }
-        else if (spell == new Vector3(1, 0, 2))
+        else if (spell == new Vector3(1, 3, 3) || spell == new Vector3(3, 3, 1) || spell == new Vector3(3, 1, 3))
         {
             enemies_container.GetComponent<enemy_cont_script>()
                 .deal_damage(1 * multiplier);
             multiplier = 1;
         }
-        else if (spell == new Vector3(0, 3, 0))
+        else if (spell == new Vector3(2, 2, 2))
         {
-            print("healed");
+            game_handler.GetComponent<game_handler_script>()
+                .heal_player(3 * multiplier);
             multiplier = 1;
         }
-        else if (spell == new Vector3(0, 0, 3))
+        else if (spell == new Vector3(3, 3, 3))
         {
             multiplier *= 2;
-        }
-        else
-        {
-            print("nothing for now...");
         }
     }
 
     public void use_spell()
     {
-        Vector3 spell =
-            get_color_vector(card_at_first_ing) +
-            get_color_vector(card_at_second_ing) +
-            get_color_vector(card_at_third_ing);
+        Vector3 spell = new Vector3(
+            get_color(card_at_first_ing),
+            get_color(card_at_second_ing),
+            get_color(card_at_third_ing)
+            );
         spell_action(spell);
         discard_pile.Add(card_at_first_ing);
         discard_pile.Add(card_at_second_ing);

@@ -55,6 +55,16 @@ public class game_handler_script : MonoBehaviour
         set_health_text_and_bar();
     }
 
+    public void heal_player(float amount)
+    {
+        player_hp = Mathf.Min(player_max_hp, player_hp + amount);
+        if (player_hp <= 0)
+        {
+            SceneManager.LoadScene("game_over");
+        }
+        set_health_text_and_bar();
+    }
+
     // Update is called once per frame
     void Update()
     {
