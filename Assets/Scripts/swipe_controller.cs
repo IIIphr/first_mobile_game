@@ -43,15 +43,15 @@ public class swipe_controller : MonoBehaviour
             );
     }
 
-    void spanw_to(Vector3 pos)
-    {
-        if (can_spawn)
-        {
-            transform.parent
-                .GetComponent<card_container_script>()
-                .spawn_card_at_pos(card_rest_position + pos, true);
-        }
-    }
+    //void spanw_to(Vector3 pos)
+    //{
+    //    if (can_spawn)
+    //    {
+    //        transform.parent
+    //            .GetComponent<card_container_script>()
+    //            .spawn_card_at_pos(card_rest_position + pos, true);
+    //    }
+    //}
 
     public void set_can_move(bool can)
     {

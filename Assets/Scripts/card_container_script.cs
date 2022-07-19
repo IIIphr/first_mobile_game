@@ -8,7 +8,6 @@ public class card_container_script : MonoBehaviour
     [SerializeField] GameObject enemies_container;
     [SerializeField] GameObject game_handler;
     [SerializeField] Vector3 deck_rest_pos = Vector3.zero;
-    [SerializeField] Sprite[] card_textures;
     [SerializeField] Sprite red_card;
     [SerializeField] Sprite blue_card;
     [SerializeField] Sprite green_card;
@@ -66,26 +65,26 @@ public class card_container_script : MonoBehaviour
         }
     }
 
-    public void reshuffle()
-    {
-        Vector3 position = deck_rest_pos;
-        int order = deck_size;
-        int spell_ing_count = clear_cards_except_spell();
-        for (int i = 0; i < deck_size - spell_ing_count; i++)
-        {
-            if (i == 0)
-            {
-                spawn_card_at_pos(position, true, order, true);
-            }
-            else
-            {
-                spawn_card_at_pos(position, true, order, false);
-            }
-            position += new Vector3(-0.1f, 0, 0);
-            order--;
-        }
-        did_action();
-    }
+    //public void reshuffle()
+    //{
+    //    Vector3 position = deck_rest_pos;
+    //    int order = deck_size;
+    //    int spell_ing_count = clear_cards_except_spell();
+    //    for (int i = 0; i < deck_size - spell_ing_count; i++)
+    //    {
+    //        if (i == 0)
+    //        {
+    //            spawn_card_at_pos(position, true, order, true);
+    //        }
+    //        else
+    //        {
+    //            spawn_card_at_pos(position, true, order, false);
+    //        }
+    //        position += new Vector3(-0.1f, 0, 0);
+    //        order--;
+    //    }
+    //    did_action();
+    //}
 
     int get_color(GameObject card)
     {
@@ -189,27 +188,28 @@ public class card_container_script : MonoBehaviour
         return first_spell_ing.transform.position;
     }
 
-    public void fill_deck(int number_of_cards)
+    public void fill_deck()
     {
-        deck_size = number_of_cards;
+        string[] cards = PlayerPrefs.GetString("deck","red,red,red,green,green,green,blue,blue,blue").Split(",");
+        deck_size = cards.Length;
         Vector3 position = deck_rest_pos;
-        int order = number_of_cards;
-        for(int i=0; i<number_of_cards; i++)
+        int order = cards.Length;
+        for(int i=0; i<cards.Length; i++)
         {
             if (i == 0)
             {
-                spawn_card_at_pos(position, true, order, true);
+                spawn_card_at_pos(position, true, cards[i], order, true);
             }
             else
             {
-                spawn_card_at_pos(position, true, order, false);
+                spawn_card_at_pos(position, true, cards[i], order, false);
             }
             position += new Vector3(-0.1f, 0, 0);
             order--;
         }
     }
 
-    public void spawn_card_at_pos(Vector3 pos, bool active, int order = 0, bool can_move = false)
+    public void spawn_card_at_pos(Vector3 pos, bool active, string card, int order, bool can_move)
     {
         GameObject temp = Instantiate(card_template);
         temp.transform.SetParent(transform, false);
@@ -217,7 +217,18 @@ public class card_container_script : MonoBehaviour
         temp.GetComponent<swipe_controller>().set_can_spawn(false);
         temp.GetComponent<swipe_controller>().set_can_move(can_move);
         temp.GetComponent<SpriteRenderer>().sortingOrder = order;
-        temp.GetComponent<SpriteRenderer>().sprite = card_textures[Random.Range(0, card_textures.Length)];
+        if(card == "red")
+        {
+            temp.GetComponent<SpriteRenderer>().sprite = red_card;
+        }
+        else if (card == "green")
+        {
+            temp.GetComponent<SpriteRenderer>().sprite = green_card;
+        }
+        else if (card == "blue")
+        {
+            temp.GetComponent<SpriteRenderer>().sprite = blue_card;
+        }
         temp.SetActive(active);
         hand_cards.Add(temp);
     }

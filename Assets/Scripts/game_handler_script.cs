@@ -24,7 +24,7 @@ public class game_handler_script : MonoBehaviour
         player_hp = player_max_hp;
         set_health_text_and_bar();
         difficulty = PlayerPrefs.GetInt("difficulty", 1);
-        cards_container.GetComponent<card_container_script>().fill_deck(5);
+        cards_container.GetComponent<card_container_script>().fill_deck();
         enemies_container.GetComponent<enemy_cont_script>().set_diffculty(difficulty);
         enemies_container.GetComponent<enemy_cont_script>().start_spawning();
     }
