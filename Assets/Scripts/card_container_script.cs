@@ -27,6 +27,7 @@ public class card_container_script : MonoBehaviour
     bool is_third_full = false;
     ArrayList hand_cards = new ArrayList();
     ArrayList discard_pile = new ArrayList();
+    ArrayList used_pile = new ArrayList();
     float multiplier = 1;
     int deck_size = 5;
 
@@ -143,9 +144,9 @@ public class card_container_script : MonoBehaviour
             get_color(card_at_third_ing)
             );
         spell_action(spell);
-        discard_pile.Add(card_at_first_ing);
-        discard_pile.Add(card_at_second_ing);
-        discard_pile.Add(card_at_third_ing);
+        used_pile.Add(card_at_first_ing);
+        used_pile.Add(card_at_second_ing);
+        used_pile.Add(card_at_third_ing);
         card_at_first_ing.SetActive(false);
         card_at_second_ing.SetActive(false);
         card_at_third_ing.SetActive(false);
@@ -296,7 +297,7 @@ public class card_container_script : MonoBehaviour
         shuffle_list(discard_pile);
         for (int i = 0; i < number_of_cards; i++)
         {
-            GameObject temp = ((GameObject)discard_pile[i]);
+            GameObject temp = (GameObject)discard_pile[i];
             temp.transform.SetParent(transform, false);
             temp.GetComponent<swipe_controller>().set_rest_pos(position);
             temp.GetComponent<swipe_controller>().set_can_spawn(false);
@@ -367,6 +368,24 @@ public class card_container_script : MonoBehaviour
             yield return null;
         }
         ((GameObject)cards[0]).GetComponent<swipe_controller>().set_can_move(true);
+    }
+
+    public void rest()
+    {
+        for(int i=0; i<used_pile.Count; i++)
+        {
+            discard_pile.Add(used_pile[i]);
+        }
+        for (int i = 0; i < hand_cards.Count; i++)
+        {
+            discard_pile.Add(hand_cards[i]);
+        }
+        hand_cards.Clear();
+        used_pile.Clear();
+        shuffle_back();
+        current_actions = 0;
+        game_handler.GetComponent<game_handler_script>()
+            .pass_turn();
     }
 
     // Update is called once per frame
