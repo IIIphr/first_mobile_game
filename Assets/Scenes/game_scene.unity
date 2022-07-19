@@ -1940,6 +1940,12 @@ MonoBehaviour:
   card_container: {fileID: 245304555}
   spawn_button: {fileID: 1966284126}
   game_handler: {fileID: 1210177580}
+  red_card: {fileID: 21300000, guid: 6aee828de10aec54a827917228ecafc1, type: 3}
+  blue_card: {fileID: 21300000, guid: 27c94b7d477f2964fa5f8115c0dfce12, type: 3}
+  green_card: {fileID: 21300000, guid: 7be118fbbbcdf4a429d7151cfd1b9bdb, type: 3}
+  first_spell_ing: {fileID: 1859441211}
+  second_spell_ing: {fileID: 1412493843}
+  third_spell_ing: {fileID: 915698437}
 --- !u!4 &1355849249
 Transform:
   m_ObjectHideFlags: 0

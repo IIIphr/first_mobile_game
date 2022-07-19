@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class card_container_script : MonoBehaviour
 {
-    [SerializeField] GameObject card_template;
+    [SerializeField] public GameObject card_template;
     [SerializeField] GameObject enemies_container;
     [SerializeField] GameObject game_handler;
     [SerializeField] Vector3 deck_rest_pos = Vector3.zero;
@@ -256,6 +256,9 @@ public class card_container_script : MonoBehaviour
         {
             shuffle_back();
         }
+        current_actions = 0;
+        game_handler.GetComponent<game_handler_script>()
+            .pass_turn();
     }
 
     public void discarded(GameObject card)

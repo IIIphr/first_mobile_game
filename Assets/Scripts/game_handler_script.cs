@@ -27,6 +27,7 @@ public class game_handler_script : MonoBehaviour
         cards_container.GetComponent<card_container_script>().fill_deck();
         enemies_container.GetComponent<enemy_cont_script>().set_diffculty(difficulty);
         enemies_container.GetComponent<enemy_cont_script>().start_spawning();
+        pass_turn();
     }
 
     public void set_health_text_and_bar()

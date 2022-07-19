@@ -27,7 +27,7 @@ public class enemy_script : MonoBehaviour
     {
         // deal damage
         this.transform.parent.GetComponent<enemy_cont_script>()
-            .damage_to_player(damage);
+            .add_card(Random.Range(0, 2) < 1 ? "red" : "blue");
     }
 
     public void set_max_hp(float number)
