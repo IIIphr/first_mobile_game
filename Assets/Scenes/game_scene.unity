@@ -1670,6 +1670,7 @@ MonoBehaviour:
   enemies_container: {fileID: 1355849247}
   health_bar: {fileID: 1555206806}
   health_number: {fileID: 877542460}
+  gold_text: {fileID: 1538188147}
   player_max_hp: 10
 --- !u!1 &1235160778
 GameObject:
