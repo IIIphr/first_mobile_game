@@ -11,8 +11,10 @@ public class game_handler_script : MonoBehaviour
     [SerializeField] GameObject enemies_container;
     [SerializeField] Image health_bar;
     [SerializeField] TextMeshProUGUI health_number;
+    [SerializeField] TextMeshProUGUI gold_text;
     [SerializeField] float player_max_hp = 10;
     float player_hp = 10;
+    int gold_amount;
     int difficulty = 1;
     // 0 : easy
     // 1 : medium
@@ -21,6 +23,8 @@ public class game_handler_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gold_amount = PlayerPrefs.GetInt("gold", 0);
+        set_gold_text();
         player_hp = player_max_hp;
         set_health_text_and_bar();
         difficulty = PlayerPrefs.GetInt("difficulty", 1);
@@ -28,6 +32,18 @@ public class game_handler_script : MonoBehaviour
         enemies_container.GetComponent<enemy_cont_script>().set_diffculty(difficulty);
         enemies_container.GetComponent<enemy_cont_script>().start_spawning();
         pass_turn();
+    }
+
+    public void add_coins(int amount)
+    {
+        gold_amount += amount;
+        set_gold_text();
+        PlayerPrefs.SetInt("gold", gold_amount);
+    }
+
+    void set_gold_text()
+    {
+        gold_text.text = "gold: " + gold_amount;
     }
 
     public void set_health_text_and_bar()

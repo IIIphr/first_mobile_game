@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class menu_handler_script : MonoBehaviour
 {
     [SerializeField] GameObject[] main_menu_items;
     [SerializeField] GameObject[] settings_menu_items;
+    [SerializeField] TextMeshProUGUI gold_text;
+    int gold_amount;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,13 @@ public class menu_handler_script : MonoBehaviour
         {
             settings_menu_items[i].SetActive(false);
         }
+        gold_amount = PlayerPrefs.GetInt("gold", 0);
+        set_gold_text();
+    }
+
+    void set_gold_text()
+    {
+        gold_text.text = "gold: " + gold_amount;
     }
 
     public void load_main()

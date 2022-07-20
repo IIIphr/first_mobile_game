@@ -181,6 +181,8 @@ public class enemy_cont_script : MonoBehaviour
     public void died(GameObject enemy)
     {
         current_enemies.Remove(enemy);
+        game_handler.GetComponent<game_handler_script>()
+            .add_coins(5 + difficulty * 5);
         if(is_first_full)
         {
             is_first_full = false;
