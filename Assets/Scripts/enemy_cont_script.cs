@@ -8,9 +8,9 @@ public class enemy_cont_script : MonoBehaviour
     [SerializeField] GameObject card_container;
     [SerializeField] GameObject spawn_button;
     [SerializeField] GameObject game_handler;
-    [SerializeField] Sprite red_card;
-    [SerializeField] Sprite blue_card;
-    [SerializeField] Sprite green_card;
+    [SerializeField] public Sprite red_card;
+    [SerializeField] public Sprite blue_card;
+    [SerializeField] public Sprite green_card;
     [SerializeField] GameObject first_spell_ing;
     [SerializeField] GameObject second_spell_ing;
     [SerializeField] GameObject third_spell_ing;
@@ -49,6 +49,11 @@ public class enemy_cont_script : MonoBehaviour
         {
             print("no enemy");
         }
+    }
+
+    public bool is_spell_full()
+    {
+        return is_first_full && is_second_full && is_third_full;
     }
 
     Vector3 new_card_pos(GameObject card)
@@ -114,7 +119,7 @@ public class enemy_cont_script : MonoBehaviour
         }
     }
 
-    void do_spell()
+    public void do_spell()
     {
         Vector3 spell = new Vector3(
             get_color(card_at_first_ing),
@@ -125,38 +130,26 @@ public class enemy_cont_script : MonoBehaviour
         is_first_full = false;
         is_second_full = false;
         is_third_full = false;
-        Destroy(card_at_first_ing);
-        Destroy(card_at_second_ing);
-        Destroy(card_at_third_ing);
+        card_at_first_ing.SetActive(false);
+        card_at_second_ing.SetActive(false);
+        card_at_third_ing.SetActive(false);
         card_at_first_ing = null;
         card_at_second_ing = null;
         card_at_third_ing = null;
     }
 
-    public void add_card(string card)
+    public GameObject get_card_template()
     {
-        GameObject temp = Instantiate(card_container.GetComponent<card_container_script>()
-                .card_template);
-        Vector3 pos = new_card_pos(temp);
+        return card_container.GetComponent<card_container_script>().card_template;
+    }
+
+    public void add_card(GameObject card)
+    {
+        Vector3 pos = new_card_pos(card);
         if (pos != Vector3.zero)
         {
-            temp.GetComponent<swipe_controller>().set_rest_pos(pos);
-            temp.GetComponent<swipe_controller>().set_can_spawn(false);
-            temp.GetComponent<swipe_controller>().set_can_move(false);
-            temp.GetComponent<SpriteRenderer>().sortingOrder = 0;
-            if (card == "red")
-            {
-                temp.GetComponent<SpriteRenderer>().sprite = red_card;
-            }
-            else if (card == "green")
-            {
-                temp.GetComponent<SpriteRenderer>().sprite = green_card;
-            }
-            else if (card == "blue")
-            {
-                temp.GetComponent<SpriteRenderer>().sprite = blue_card;
-            }
-            temp.SetActive(true);
+            card.GetComponent<swipe_controller>().set_rest_pos(pos);
+            card.SetActive(true);
         }
         else
         {
@@ -188,7 +181,25 @@ public class enemy_cont_script : MonoBehaviour
     public void died(GameObject enemy)
     {
         current_enemies.Remove(enemy);
-        if(current_enemies.Count == 0)
+        if(is_first_full)
+        {
+            is_first_full = false;
+            card_at_first_ing.SetActive(false);
+            card_at_first_ing = null;
+        }
+        if (is_second_full)
+        {
+            is_second_full = false;
+            card_at_second_ing.SetActive(false);
+            card_at_second_ing = null;
+        }
+        if (is_third_full)
+        {
+            is_third_full = false;
+            card_at_third_ing.SetActive(false);
+            card_at_third_ing = null;
+        }
+        if (current_enemies.Count == 0)
         {
             spawn_button.SetActive(true);
         }
