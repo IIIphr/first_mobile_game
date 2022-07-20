@@ -130,6 +130,18 @@ public class card_container_script : MonoBehaviour
                 .heal_player(3 * multiplier);
             multiplier = 1;
         }
+        else if (spell == new Vector3(2, 2, 3) || spell == new Vector3(2, 3, 2) || spell == new Vector3(3, 2, 2))
+        {
+            game_handler.GetComponent<game_handler_script>()
+                .heal_player(2 * multiplier);
+            multiplier = 1;
+        }
+        else if (spell == new Vector3(2, 3, 3) || spell == new Vector3(3, 3, 2) || spell == new Vector3(3, 2, 3))
+        {
+            game_handler.GetComponent<game_handler_script>()
+                .heal_player(1 * multiplier);
+            multiplier = 1;
+        }
         else if (spell == new Vector3(3, 3, 3))
         {
             multiplier *= 2;
