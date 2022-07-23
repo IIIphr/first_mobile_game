@@ -203,7 +203,7 @@ public class card_container_script : MonoBehaviour
 
     public void fill_deck()
     {
-        string[] cards = PlayerPrefs.GetString("deck","red,red,red,green,green,green,blue,blue,blue").Split(",");
+        string[] cards = PlayerPrefs.GetString("deck", "red,red,red,green,green,green,blue,blue,blue").Split(",");
         deck_size = cards.Length;
         Vector3 position = deck_rest_pos;
         int order = cards.Length;
@@ -309,7 +309,7 @@ public class card_container_script : MonoBehaviour
         Vector3 position = deck_rest_pos;
         int number_of_cards = discard_pile.Count;
         int order = number_of_cards - 1;
-        shuffle_list(discard_pile);
+        //shuffle_list(discard_pile);
         for (int i = 0; i < number_of_cards; i++)
         {
             GameObject temp = (GameObject)discard_pile[i];

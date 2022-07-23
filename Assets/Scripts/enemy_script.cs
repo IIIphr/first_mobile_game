@@ -9,7 +9,6 @@ public class enemy_script : MonoBehaviour
     [SerializeField] Image health_bar;
     [SerializeField] TextMeshProUGUI health_number;
     [SerializeField] float max_hp = 10;
-    [SerializeField] float damage = 2;
     [SerializeField] ArrayList used_pile = new ArrayList();
     [SerializeField] ArrayList deck_pile = new ArrayList();
     bool did_deck_filled = false;

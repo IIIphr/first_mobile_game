@@ -203,7 +203,8 @@ public class enemy_cont_script : MonoBehaviour
         }
         if (current_enemies.Count == 0)
         {
-            spawn_button.SetActive(true);
+            add_enemy();
+            //spawn_button.SetActive(true);
         }
     }
 

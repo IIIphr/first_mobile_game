@@ -61,6 +61,11 @@ public class menu_handler_script : MonoBehaviour
         SceneManager.LoadScene("game_scene");
     }
 
+    public void deck_menu()
+    {
+        SceneManager.LoadScene("deck_scene");
+    }
+
     public void set_hard()
     {
         PlayerPrefs.SetInt("difficulty", 2);
