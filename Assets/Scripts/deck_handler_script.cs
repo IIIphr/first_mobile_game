@@ -10,12 +10,21 @@ public class deck_handler_script : MonoBehaviour
     [SerializeField] GameObject green_field;
     [SerializeField] GameObject blue_field;
     [SerializeField] TextMeshProUGUI message;
+    [SerializeField] TextMeshProUGUI gold_text;
+    int gold_amount;
 
     // Start is called before the first frame update
     void Start()
     {
         message.text = "";
         set_fields();
+        gold_amount = PlayerPrefs.GetInt("gold", 0);
+        set_gold_text();
+    }
+
+    void set_gold_text()
+    {
+        gold_text.text = "gold: " + gold_amount;
     }
 
     void set_fields()
@@ -47,7 +56,11 @@ public class deck_handler_script : MonoBehaviour
         int red_count = int.Parse(red_field.GetComponent<TMP_InputField>().text);
         int green_count = int.Parse(green_field.GetComponent<TMP_InputField>().text);
         int blue_count = int.Parse(blue_field.GetComponent<TMP_InputField>().text);
-        if(red_count + blue_count + green_count != 9)
+        if (gold_amount < 50)
+        {
+            message.text = "not enough gold";
+        }
+        else if(red_count + blue_count + green_count != 9)
         {
             message.text = "invalid combination";
         }
@@ -92,9 +105,19 @@ public class deck_handler_script : MonoBehaviour
                 }
             }
             PlayerPrefs.SetString("deck", temp);
+            PlayerPrefs.SetInt("gold", gold_amount - 50);
+            gold_amount = PlayerPrefs.GetInt("gold", 0);
             message.text = "applied!";
             set_fields();
+            set_gold_text();
         }
+    }
+
+    public void add_g()
+    {
+        PlayerPrefs.SetInt("gold", gold_amount + 100);
+        gold_amount = PlayerPrefs.GetInt("gold", 0);
+        set_gold_text();
     }
 
     public void main_menu()
